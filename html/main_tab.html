@@ -126,6 +126,9 @@
         .visible {
             display: block;
         }
+        #jsonOutput {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -145,7 +148,9 @@
         <input type="text" id="copy-success" readonly>
     </div>
 </div>
-
+<div id="jsonOutput">
+    <button id="foldButton" onclick="toggleFold()">Fold/Unfold</button>
+</div>
 <script>
     const jsonInput = document.querySelector('#json');
     const formattedOutput = document.querySelector('#formatted');
@@ -208,6 +213,7 @@
             return obj;
         }
     }
+
     document.addEventListener("DOMContentLoaded", function () {
         var json = JSON.parse(document.getElementById("json").textContent);
         var output = display(json);
@@ -230,6 +236,18 @@
             });
         }
     });
+
+    function toggleFold() {
+        var content = document.getElementById("jsonOutput");
+        var button = document.getElementById("foldButton");
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            button.innerHTML = "Fold";
+        } else {
+            content.style.display = "none";
+            button.innerHTML = "Unfold";
+        }
+    }
 </script>
 </body>
 </html>
