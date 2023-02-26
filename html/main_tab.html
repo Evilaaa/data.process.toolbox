@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+
+        .form label {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .form textarea {
+            font-size: 16px;
+            line-height: 24px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .form button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #4564d1;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form button:hover {
+            background-color: #304cb2;
+        }
+
+        .output {
+            display: none;
+            flex-direction: column;
+        }
+
+        .output label,
+        .output textarea {
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .output textarea {
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .output button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #4564d1;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .output button:hover {
+            background-color: #304cb2;
+        }
+
+        .output label {
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 24px;
+            color: #333;
+        }
+
+        .output input {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>JSON Formatter</h1>
+    <form class="form">
+        <label for="json">JSON 数据</label>
+        <textarea id="json" placeholder="在此输入 JSON 数据"></textarea>
+        <button type="submit">格式化</button>
+    </form>
+    <div class="output">
+        <label for="formatted">格式化后的 JSON 数据</label>
+        <textarea id="formatted" readonly></textarea>
+        <button type="button" onclick="copyToClipboard()">复制</button>
+        <br>
+        <label for="copy-success" id="copy-success-label"></label>
+        <input type="text" id="copy-success" readonly>
+    </div>
+</div>
+
+<script>
+    const jsonInput = document.querySelector('#json');
+    const formattedOutput = document.querySelector('#formatted');
+    const outputSection = document.querySelector('.output');
+    const copySuccessLabel = document.querySelector('#copy-success-label');
+    const copySuccessInput = document.querySelector('#copy-success');
+
+    function formatJSON(event) {
+        event.preventDefault();
+
+        const jsonText = jsonInput.value.trim();
+
+        if (jsonText.length === 0) {
+            alert('请输入 JSON 数据');
+            return;
+        }
+
+        try {
+            const obj = JSON.parse(jsonText);
+            const formattedText = JSON.stringify(obj, null, 2);
+            formattedOutput.value = formattedText;
+            outputSection.style.display = 'flex';
+        } catch (error) {
+            alert('输入的数据不是有效的 JSON 数据');
+        }
+    }
+
+    function copyToClipboard() {
+        formattedOutput.select();
+        document.execCommand('copy');
+        copySuccessLabel.innerText = '已复制到剪贴板：';
+        copySuccessInput.value = formattedOutput.value;
+    }
+
+    const form = document.querySelector('.form');
+    form.addEventListener('submit', formatJSON);
+</script>
+</body>
+</html>
