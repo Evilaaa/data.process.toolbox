@@ -131,8 +131,6 @@
         }
 
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqTree/1.4.9/jqtree.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/chris-castle/jquery-json-viewer/dist/jquery.json-viewer.css" />
 </head>
 <body>
 <div class="container">
@@ -145,14 +143,12 @@
     <div class="output">
         <label for="formatted">格式化后的 JSON 数据</label>
         <textarea id="formatted" readonly></textarea>
+        <button id="foldButton" onclick="toggleFold()">Fold/Unfold</button>
         <button type="button" onclick="copyToClipboard()">复制</button>
         <br>
         <label for="copy-success" id="copy-success-label"></label>
         <input type="text" id="copy-success" readonly>
     </div>
-</div>
-<div id="jsonOutput">
-    <button id="foldButton" onclick="toggleFold()">Fold/Unfold</button>
 </div>
 <script>
     const jsonInput = document.querySelector('#json');
@@ -241,7 +237,7 @@
     });
 
     function toggleFold() {
-        var content = document.getElementById("jsonOutput");
+        var content = document.getElementById("formatted");
         var button = document.getElementById("foldButton");
         if (content.style.display === "none") {
             content.style.display = "block";
@@ -252,9 +248,6 @@
         }
     }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqTree/1.4.9/tree.jquery.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/chris-castle/jquery-json-viewer/dist/jquery.json-viewer.min.js"></script>
 
 </body>
 </html>
