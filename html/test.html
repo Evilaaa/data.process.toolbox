@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Formatter</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .formatted-json {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff;
+            overflow: auto;
+            position: relative;
+        }
+
+        .formatted-json ul {
+            list-style: none;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .formatted-json .key {
+            color: #00f;
+        }
+
+        .formatted-json .value {
+            color: #f00;
+        }
+
+        .formatted-json .string {
+            color: #080;
+        }
+
+        .formatted-json .number {
+            color: #00a;
+        }
+
+        .formatted-json .boolean {
+            color: #008;
+        }
+
+        .formatted-json .null {
+            color: #888;
+        }
+
+        .formatted-json .collapsible {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .formatted-json .active {
+            background-color: #333;
+        }
+
+        .formatted-json .visible {
+            display: none;
+        }
+
+        .formatted-json .collapsible:after {
+            content: "+";
+            display: block;
+            text-align: center;
+            line-height: 10px;
+            color: #fff;
+        }
+
+        .formatted-json .active:after {
+            content: "-";
+        }
+    </style>
+</head>
+<body>
+<h1>JSON Formatter</h1>
+<form onsubmit="return false;">
+    <label for="json-input">Enter JSON:</label>
+    <textarea id="json-input" name="json-input" rows="10" cols="80"></textarea>
+    <input type="submit" value="Format" onclick="formatJson()">
+</form>
+<div class="formatted-json" id="formatted-json"></div>
+<script>
+    function formatJson() {
+        try {
+            const jsonInput = document.getElementById("json-input").value;
+            const jsonObject = JSON.parse(jsonInput);
+            const formattedJson = format(jsonObject);
+            document.getElementById("formatted-json").innerHTML = formattedJson;
+        } catch (error) {
+            alert("Invalid JSON format.");
+        }
+    }
+
+    function format(json) {
+        let result = "";
+        result += "<ul>";
+        for (const key in json) {
+            result += "<li>";
+            result += "<span class='collapsible' onclick='toggleCollapse(this)'></span>";
+            result += "<span class='key'>" + key + "</span>: ";
+            const value = json[key];
+            if (typeof value === "object" && value !== null) {
+                result += format(value);
+            } else {
+                result += "<span class='" + getValueClass(value) + "'>" + getValueString(value) + "</span>";
+            }
+            result += "</li>";
+        }
+        result += "</ul>";
+        return result;
+    }
+
+    function getValueString(value) {
+        if (typeof value === "string") {
+            return '"' + value + '"';
+        } else {
+            return value;
+        }
+    }
+
+    function getValueClass(value) {
+        switch (typeof value) {
+            case "string":
+                return "string";
+            case "number":
+                return "number";
+            case "boolean":
+                return "boolean";
+            case "object":
+                if (value === null) {
+                    return "null";
+                } else {
+                    return "collapsible";
+                }
+            default:
+                return "";
+        }
+    }
+
+    function toggleCollapse(element) {
+        element.classList.toggle("active");
+        const ulElement = element.parentNode.getElementsByTagName("ul")[0];
+        ulElement.classList.toggle("visible");
+    }
+</script>
+</body>
+</html>

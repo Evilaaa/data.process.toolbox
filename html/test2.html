@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .form label {
+            margin-bottom: 10px;
+        }
+        .form textarea {
+            height: 200px;
+            resize: vertical;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form button {
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .output {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #fff;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>JSON Formatter</h1>
+    <form class="form">
+        <label for="json-input">JSON Input:</label>
+        <textarea id="json-input" placeholder="Enter JSON data here"></textarea>
+        <button type="button" onclick="formatJson()">Format JSON</button>
+    </form>
+    <div class="output" id="formatted-json"></div>
+</div>
+<script>
+    function formatJson() {
+        const jsonInput = document.getElementById("json-input").value;
+        try {
+            const parsedJson = JSON.parse(jsonInput);
+            const formattedJson = JSON.stringify(parsedJson, null, 4);
+            document.getElementById("formatted-json").textContent = formattedJson;
+        } catch (error) {
+            document.getElementById("formatted-json").textContent = "Error: Invalid JSON input.";
+        }
+    }
+</script>
+</body>
+</html>
